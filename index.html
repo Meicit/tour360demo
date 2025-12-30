@@ -3,56 +3,59 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tour 360 Ngẫu Nhiên</title>
+    <title>Multi-Room Virtual Tour</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
     <style>
-        #panorama {
-            width: 100%;
-            height: 100vh; /* Hiển thị toàn màn hình */
-        }
-        #title-overlay {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: white;
-            background: rgba(0,0,0,0.5);
-            padding: 10px;
-            font-family: Arial, sans-serif;
-            border-radius: 5px;
-            z-index: 100;
-        }
+        #panorama { width: 100%; height: 100vh; }
+        .custom-hotspot { height: 50px; width: 50px; background: url('https://img.icons8.com/ios-filled/50/ffffff/up-squared.png'); background-size: contain; }
     </style>
 </head>
 <body>
 
-<div id="title-overlay">Bảo Tàng Ảo Demo - Gemini</div>
 <div id="panorama"></div>
 
 <script>
-    // Khởi tạo trình xem ảnh 360
-    pannellum.viewer('panorama', {
-        "type": "equirectangular",
-        "panorama": "https://pannellum.org/images/alma.jpg", // Link ảnh 360 ngẫu nhiên
-        "autoLoad": true,
-        "autoRotate": -2, // Tự động xoay chậm
-        "title": "Thư viện Alma",
-        "author": "Pannellum Sample",
-        "hotSpots": [
-            {
-                "pitch": -10,
-                "yaw": 10,
-                "type": "info",
-                "text": "Đây là một hiện vật lịch sử (Demo)"
-            },
-            {
-                "pitch": -5,
-                "yaw": 120,
-                "type": "info",
-                "text": "Lối đi sang gian phòng khác"
-            }
-        ]
-    });
+pannellum.viewer('panorama', {   
+    "default": {
+        "firstScene": "phong_khach",
+        "author": "Gemini Tour Creator",
+        "sceneFadeDuration": 1000,
+        "autoLoad": true
+    },
+
+    "scenes": {
+        "phong_khach": {
+            "title": "Phòng Khách",
+            "panorama": "https://pannellum.org/images/alma.jpg",
+            "hotSpots": [
+                {
+                    "pitch": -10, // Tọa độ dọc
+                    "yaw": 110,   // Tọa độ ngang
+                    "type": "scene",
+                    "text": "Đi vào Thư viện",
+                    "sceneId": "thu_vien" // ID của cảnh tiếp theo
+                }
+            ]
+        },
+
+        "thu_vien": {
+            "title": "Thư viện",
+            "panorama": "https://pannellum.org/images/cerro-tololo.jpg",
+            "hotSpots": [
+                {
+                    "pitch": -5,
+                    "yaw": -10,
+                    "type": "scene",
+                    "text": "Quay lại Phòng Khách",
+                    "sceneId": "phong_khach",
+                    "targetYaw": -20, // Hướng nhìn sau khi chuyển cảnh
+                    "targetPitch": 0
+                }
+            ]
+        }
+    }
+});
 </script>
 
 </body>
